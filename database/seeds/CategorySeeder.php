@@ -15,22 +15,22 @@ class CategorySeeder extends Seeder
     {
         DB::table('categories')->insert([
             [
-                'name' =>'hersey',
+                'name' =>'Galletas',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'name' =>'pantalon',
+                'name' =>'Chocolates',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'name' =>'pullover',
+                'name' =>'Caramelos',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'name' =>'Sudadera',
+                'name' =>'Piruleta',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
