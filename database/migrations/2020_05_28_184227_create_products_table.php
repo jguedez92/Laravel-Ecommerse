@@ -17,10 +17,12 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('brand');
             $table->string('model');
+            $table->string('motor');
             $table->string('license');
             $table->string('status');
             $table->float('price',10);
             $table->text('description');
+            $table->text('category_id');
             $table->string('image_path')->nullable();
             $table->timestamps();
         });
