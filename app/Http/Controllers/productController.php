@@ -8,26 +8,28 @@ use Illuminate\Http\Request;
 
 class productController extends Controller
 {
-    public function getAll(){
+    public function getAll()
+    {
         try {
             $products = Product::get();
             return response($products->load('categories'));
         } catch (\Exception $e) {
             return response([
-                'error' => $e->getMessage() .'\n'
+                'error' => $e->getMessage() . '\n'
             ], 500);
         }
     }
-    public function insert(Request $request){
+    public function insert(Request $request)
+    {
         try {
-            $categoriesIds = Category::all()->map(fn ($category) => $category->id)->toArray(); 
+            $categoriesIds = Category::all()->map(fn ($category) => $category->id)->toArray();
             $body = $request->validate([
                 'name' => 'required|string|max:40',
-                'status'=>'required|string',
+                'status' => 'required|string',
                 'price' => 'required|numeric',
                 'description' => 'string',
                 'categories' => 'required|array|in:' . implode(',', $categoriesIds)
-                
+
             ]);
             $categories = $body['categories'];
             unset($body['categories']);
@@ -37,11 +39,12 @@ class productController extends Controller
             return response($product, 201);
         } catch (\Exception $e) {
             return response([
-                'error' => $e->getMessage() .'\n'
+                'error' => $e->getMessage() . '\n'
             ], 500);
         }
     }
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         try {
             $categories = Category::all();
             $categoriesIds = $categories->map(fn ($category) => $category->id)->toArray();
@@ -49,19 +52,21 @@ class productController extends Controller
                 'name' => 'string|max:40',
                 'price' => 'numeric',
                 'description' => 'string',
-                'categories' => 'array|in:' . explode(',', $categoriesIds)
+                'categories' => 'array|in:' . implode(',', $categoriesIds)
             ]);
-            $categories = $body['categories'];
-            unset($body['categories']);
             $product = Product::find($id);
-            $product->update($body);
             if ($request->has('categories')) {
+                $categories = $body['categories'];
+                unset($body['categories']);
+                $product->update($body);
                 $product->categories()->sync($categories);
+            }else {
+                $product->update($body);
             }
             return response($product->load('categories'));
         } catch (\Exception $e) {
             return response([
-                'error' => $e->getMessage() .'\n'
+                'error' => $e->getMessage() . '\n'
             ], 500);
         }
     }
