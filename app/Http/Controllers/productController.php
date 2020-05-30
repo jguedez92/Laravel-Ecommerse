@@ -51,10 +51,12 @@ class productController extends Controller
                 'description' => 'string',
                 'categories' => 'array|in:' . explode(',', $categoriesIds)
             ]);
+            $categories = $body['categories'];
+            unset($body['categories']);
             $product = Product::find($id);
             $product->update($body);
             if ($request->has('categories')) {
-                $product->categories()->sync($body['categories']);
+                $product->categories()->sync($categories);
             }
             return response($product->load('categories'));
         } catch (\Exception $e) {
