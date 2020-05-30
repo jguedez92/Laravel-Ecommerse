@@ -17,14 +17,14 @@ class UserSeeder extends Seeder
     {
         DB::table('users')->insert([
             [
-                'name' =>'God account',
+                'fullName' =>'God account',
                 'email' => 'god@gmail.com',
                 'password' => Hash::make('1234'),
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'name' =>'admin account',
+                'fullName' =>'admin account',
                 'email' => 'admin@yo.com',
                 'password' => Hash::make('1234'),
                 'created_at' => Carbon::now(),
