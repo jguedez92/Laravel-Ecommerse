@@ -10,7 +10,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::prefix('users')->group(function () {
     Route::post('/register', 'UserController@register');
     Route::post('/login', 'UserController@login');
-
     Route::middleware('auth:api')->group(function () {
         Route::get('logout', 'UserController@logout');
         Route::get('/getAll', 'UserController@getAll');
@@ -19,24 +18,28 @@ Route::prefix('users')->group(function () {
         Route::delete('/{id}', 'UserController@delete');
     });
 });
-
 Route::prefix('categories')->group(function () {
     Route::get('', 'CategoryController@getAll');
-
     Route::middleware('auth:api')->group(function () {
         Route::post('/register', 'CategoryController@insert');
         Route::put('{id}', 'CategoryController@update');
         Route::delete('{id}', 'CategoryController@delete');
     });
 });
-
-
 Route::prefix('products')->group(function () {
     Route::get('', 'ProductController@getAll');
-
     Route::middleware('auth:api')->group(function () {
         Route::post('/register', 'ProductController@insert');
         Route::put('{id}', 'ProductController@update');
         Route::delete('{id}', 'ProductController@delete');
+    });
+});
+Route::prefix('orders')->group(function () {
+    Route::get('', 'OrderController@getAll');
+    Route::get('/{id}', 'OrderController@getForUserId');
+
+    Route::middleware('auth:api')->group(function () {
+        Route::post('/register', 'OrderController@insert');
+        Route::put('{id}', 'OrderController@update');
     });
 });
