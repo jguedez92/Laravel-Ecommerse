@@ -20,6 +20,17 @@ class productController extends Controller
             ], 500);
         }
     }
+    public function getProductsByUser($user_id)
+    {
+        try {
+            $products = Product::where('user_id', $user_id)->get();
+            return response($products->load('category'));
+        } catch (\Exception $e) {
+            return response([
+                'error' => $e->getMessage() . '\n'
+            ], 500);
+        }
+    }
     public function insert(Request $request)
     {
         try {

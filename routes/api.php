@@ -28,10 +28,11 @@ Route::prefix('categories')->group(function () {
 });
 Route::prefix('products')->group(function () {
     Route::get('', 'ProductController@getAll');
+    Route::get('/{user_id}', 'ProductController@getProductsByUser');
     Route::middleware('auth:api')->group(function () {
         Route::post('/register', 'ProductController@insert');
-        Route::put('{id}', 'ProductController@update');
-        Route::delete('{id}', 'ProductController@delete');
+        Route::put('{product_id}/{user_id}', 'ProductController@update');
+        Route::delete('{product_id}/{user_id}', 'ProductController@delete');
     });
 });
 Route::prefix('orders')->group(function () {
