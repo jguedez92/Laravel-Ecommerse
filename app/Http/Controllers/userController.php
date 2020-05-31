@@ -13,7 +13,7 @@ class userController extends Controller
     {
         try {
             $user = User::get();
-            return response($user, 201);
+            return response($user->load('product.category'), 201);
         } catch (\Exception $e) {
             echo 'Excepción capturada: ',  $e->getMessage(), "\n";
         }
@@ -23,7 +23,7 @@ class userController extends Controller
     {
         try {
             $user = User::find($id);
-            return response($user, 201);
+            return response($user->load('product.category'), 201);
         } catch (\Exception $e) {
             echo 'Excepción capturada: ',  $e->getMessage(), "\n";
         }
@@ -38,6 +38,12 @@ class userController extends Controller
                 return response($message = 'El email ya esta en uso', 500);
             }
             $body['password'] = Hash::make($body['password']);
+            if (!$request->has('role')) {
+                $body['role'] = 'user';
+            }
+            if (!$request->has('status')) {
+                $body['status'] = 'disabled';
+            }
             $user = User::create($body);
             return response($user, 201);
         } catch (\Exception $e) {

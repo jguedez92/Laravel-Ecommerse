@@ -22,9 +22,9 @@ class CreateProductsTable extends Migration
             $table->string('status');
             $table->float('price',10);
             $table->text('description');
-            $table->string('image_path')->nullable();
             $table->text('category_id');
             $table->text('user_id');
+            $table->string('principal_image_path')->nullable();
             $table->timestamps();
         });
     }
