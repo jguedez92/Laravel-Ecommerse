@@ -28,7 +28,7 @@ class userController extends Controller
             echo 'Excepción capturada: ',  $e->getMessage(), "\n";
         }
     }
-
+    //sha1(time()) para generar hash
     public function register(Request $request)
     {
         try {

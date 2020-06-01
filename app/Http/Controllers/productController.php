@@ -6,6 +6,7 @@ use App\Category;
 use App\Product;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class productController extends Controller
 {
@@ -20,10 +21,11 @@ class productController extends Controller
             ], 500);
         }
     }
-    public function getProductsByUser($user_id)
+    public function getProductsByUserId()
     {
         try {
-            $products = Product::where('user_id', $user_id)->get();
+            $user = Auth::user();
+            $products = Product::where('user_id', $user['id'])->get();
             return response($products->load('category'));
         } catch (\Exception $e) {
             return response([
@@ -56,7 +58,7 @@ class productController extends Controller
             ], 500);
         }
     }
-    public function update(Request $request, $product_id, $user_id)
+    public function update(Request $request, $product_id)
     {
         try {
             $categories = Category::all();
@@ -72,8 +74,8 @@ class productController extends Controller
                 'category_id' => 'integer|in:' . implode(',', $categoriesIds)
             ]);
             $product = Product::find($product_id);
-            $user = User::find($user_id);
-            if ($product['user_id'] !== $user['id'] or $user['role'] !== 'admin') {
+            $user = Auth::user();
+            if ($product['user_id'] != $user['id'] or $user['role'] != 'admin') {
                 return response($message = 'no está autorizado para ejecutar esta accion', 500);
             }
             $product->update($body);
@@ -88,8 +90,8 @@ class productController extends Controller
     {
         try {
             $product = Product::find($product_id);
-            $user = User::find($user_id);
-            if ($user['role'] !== 'admin') {
+            $user = Auth::user();
+            if ($user['role'] != 'admin') {
                 return response($message = 'no está autorizado para ejecutar esta accion', 500);
             }
             $product->delete();
