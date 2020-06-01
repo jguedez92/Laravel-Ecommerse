@@ -19,7 +19,12 @@ class CreateUsersTable extends Migration
             $table->string('email');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('role')->required()->default('user');
+            $table->string('role')->required();
+            $table->string('status')->required();
+            $table->string('profile_image_path')->nullable();
+            $table->string('licence_image_path')->nullable();
+            $table->string('back_licence_image_path')->nullable();
+            $table->string('dni_image_path')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

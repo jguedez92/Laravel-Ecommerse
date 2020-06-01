@@ -29,9 +29,10 @@ Route::prefix('categories')->group(function () {
 Route::prefix('products')->group(function () {
     Route::get('', 'ProductController@getAll');
     Route::middleware('auth:api')->group(function () {
+        Route::get('/getByUserId', 'ProductController@getProductsByUserId');
         Route::post('/register', 'ProductController@insert');
-        Route::put('{id}', 'ProductController@update');
-        Route::delete('{id}', 'ProductController@delete');
+        Route::put('{product_id}', 'ProductController@update');
+        Route::delete('{product_id}', 'ProductController@delete');
     });
 });
 Route::prefix('orders')->group(function () {

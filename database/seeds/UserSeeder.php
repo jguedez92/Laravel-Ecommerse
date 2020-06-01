@@ -18,18 +18,49 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'fullName' =>'God account',
-                'email' => 'god@gmail.com',
+                'email' => 'god@mail.com',
                 'password' => Hash::make('1234'),
+                'role'=> 'admin',
+                'status'=> 'enabled',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'fullName' =>'admin account',
-                'email' => 'admin@yo.com',
+                'fullName' =>'God account',
+                'email' => 'admin@mail.com',
                 'password' => Hash::make('1234'),
+                'role'=> 'admin',
+                'status'=> 'enabled',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
-            ]
+            ],
+            [
+                'fullName' =>'testing account',
+                'email' => 'test@mail.com',
+                'password' => Hash::make('1234'),
+                'role'=> 'user',
+                'status'=> 'enabled',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'fullName' =>'testing second account',
+                'email' => 'test2@mail.com',
+                'password' => Hash::make('1234'),
+                'role'=> 'user',
+                'status'=> 'enabled',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'fullName' =>'testing third account',
+                'email' => 'test3@mail.com',
+                'password' => Hash::make('1234'),
+                'role'=> 'user',
+                'status'=> 'enabled',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
         ]);
     }
 }
