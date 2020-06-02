@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\UserConfirm;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class userController extends Controller
 {
@@ -38,13 +40,10 @@ class userController extends Controller
                 return response($message = 'El email ya esta en uso', 500);
             }
             $body['password'] = Hash::make($body['password']);
-            if (!$request->has('role')) {
-                $body['role'] = 'user';
-            }
-            if (!$request->has('status')) {
-                $body['status'] = 'disabled';
-            }
-            $user = User::create($body);
+            $body['confirmation_code']= sha1($body['email']);
+            $user = new User($body);
+            Mail::to($user->email)->send(new UserConfirm($user));
+            $user->save();
             return response($user, 201);
         } catch (\Exception $e) {
             echo 'Excepción capturada: ',  $e->getMessage(), "\n";
