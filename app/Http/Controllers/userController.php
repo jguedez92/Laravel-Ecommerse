@@ -43,7 +43,7 @@ class userController extends Controller
             $body['confirmation_code']= sha1($body['email']);
             $user = new User($body);
             Mail::to($user->email)->send(new UserConfirm($user));
-            $user->save();
+            // $user->save();
             return response($user, 201);
         } catch (\Exception $e) {
             echo 'Excepción capturada: ',  $e->getMessage(), "\n";
