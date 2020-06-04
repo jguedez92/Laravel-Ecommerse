@@ -10,10 +10,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::prefix('users')->group(function () {
     Route::post('/register', 'UserController@register');
     Route::post('/login', 'UserController@login');
+    Route::get('/confirmation/{code}', 'UserController@confirmation');
     Route::middleware('auth:api')->group(function () {
         Route::get('logout', 'UserController@logout');
         Route::get('/getAll', 'UserController@getAll');
         Route::get('/{id}', 'UserController@getById');
+        Route::post('/uploadImage', 'UserController@uploadImage');
         Route::put('/{id}', 'UserController@update');
         Route::delete('/{id}', 'UserController@delete');
     });

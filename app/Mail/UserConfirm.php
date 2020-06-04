@@ -11,6 +11,7 @@ class UserConfirm extends Mailable
 {
     use Queueable, SerializesModels;
     public $user;
+    public $url;
 
     /**
      * Create a new message instance.
@@ -20,6 +21,7 @@ class UserConfirm extends Mailable
     public function __construct($user)
     {
         $this->user = $user;
+        $this->url = 'http://127.0.0.1:8000/api/users/confirmation/'.$user->confirmation_code;
     }
 
     /**

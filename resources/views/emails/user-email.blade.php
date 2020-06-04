@@ -13,34 +13,34 @@
         <!-- <img src="" alt="Grupo Caps logo"> -->
         <div></div>
     </div>
-    <main style="box-sizing: border-box; width: 100 vh;">
-        <div class="headers" style="display: flex;">
-            <div class="cliente">
-                <h1>
-                    <b>Confirmación de Usuario</b>
-                </h1>
+    <main style="box-sizing: border-box; width: 80 vh;">
+        <div>
+            <h1>
+                <b>Confirmación de Usuario</b>
+            </h1>
+            <div class="cliente" style="display: flex; justify-content:space-between">
                 <b>Ride Moto-Renting</b>
-                <span>
+                <span style="margin-left: 2em ;">
                     28006
                     Madrid
                 </span>
-
-                <span>Madrid</span>
-                <span>
+                <span style="margin-left: 2em ;">
                     CIF:B-4567894X
                 </span>
-                <span>
-                    TELF:964 456 789
+                <span style="margin-left: 2em ;">
+                    TLF:964 456 789
                 </span>
             </div>
         </div>
         <hr>
-        <div class="subheaders" style="display: flex; margin-top: 5em;">
+        <div class="subheaders" style="display: flex; margin-top: 1em;">
             <p style="padding: 3 em;">
-                Bienvenido {{ $user->fullName }} a nuestro portal, estás a sólo un paso de completar tu registro, y puedas rentar
+                Bienvenido {{ $user->fullName }} a nuestro portal, estás a sólo
+                un paso de completar tu registro, y puedas rentar
                 una motocicleta y disfrutar de la emosión de viajar en dos ruedas....
                 <br>
-                Sólo tienes que ingresar <a href=""> AQUI </a> para completar tu registro y confirmar tu cuenta....
+                Sólo tienes que ingresar <a href={{$url}}> AQUI </a> para completar tu
+                registro y confirmar tu cuenta....
             </p>
         </div>
     </main>
