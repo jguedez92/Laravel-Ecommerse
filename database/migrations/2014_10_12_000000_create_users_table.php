@@ -19,12 +19,12 @@ class CreateUsersTable extends Migration
             $table->string('email');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('level_licence')->nullable();
             $table->string('role')->default('user');
-            $table->string('status')->default('disabled');
+            $table->string('status_for_renting')->default('disabled');
             $table->string('profile_image_path')->nullable();
             $table->string('licence_image_path')->nullable();
             $table->string('dni_image_path')->nullable();
-            $table->boolean('confirmed')->default(0);
             $table->string('confirmation_code')->nullable();
             $table->rememberToken();
             $table->timestamps();

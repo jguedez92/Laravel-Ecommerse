@@ -19,12 +19,16 @@ class CreateProductsTable extends Migration
             $table->string('model');
             $table->string('motor');
             $table->string('license');
-            $table->string('status');
+            $table->string('status_for_renting')->default('pending');
             $table->float('price',10);
             $table->text('description');
             $table->text('category_id');
             $table->text('user_id');
-            $table->string('principal_image_path')->nullable();
+            $table->string('permit_circulation_image_path')->nullable();
+            $table->string('image_path_1')->nullable();
+            $table->string('image_path_2')->nullable();
+            $table->string('image_path_3')->nullable();
+            $table->string('image_path_4')->nullable();
             $table->timestamps();
         });
     }

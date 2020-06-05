@@ -10,10 +10,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::prefix('users')->group(function () {
     Route::post('/register', 'UserController@register');
     Route::post('/login', 'UserController@login');
+    Route::get('/getAll', 'UserController@getAll');
     Route::get('/confirmation/{code}', 'UserController@confirmation');
     Route::middleware('auth:api')->group(function () {
         Route::get('logout', 'UserController@logout');
-        Route::get('/getAll', 'UserController@getAll');
         Route::get('/{id}', 'UserController@getById');
         Route::post('/uploadImage', 'UserController@uploadImage');
         Route::put('/{id}', 'UserController@update');
@@ -33,6 +33,7 @@ Route::prefix('products')->group(function () {
     Route::middleware('auth:api')->group(function () {
         Route::get('/getByUserId', 'ProductController@getProductsByUserId');
         Route::post('/register', 'ProductController@insert');
+        Route::post('/uploadImage/{product_id}', 'ProductController@uploadImage');
         Route::put('{product_id}', 'ProductController@update');
         Route::delete('{product_id}', 'ProductController@delete');
     });

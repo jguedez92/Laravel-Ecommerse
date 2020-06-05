@@ -58,6 +58,46 @@ class productController extends Controller
             ], 500);
         }
     }
+    public function uploadImage(Request $request, $product_id)
+    {
+        try {
+            $user = Auth::user();
+            $product = Product::find($product_id);
+            if ($user->id != $product->user_id) {
+                return response(['message' => 'AUTORIZACION DENEGADA: El producto no pertenece a este usuario']);
+            }
+            $request->validate(
+                ['image_path_1' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'],
+                ['image_path_2' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'],
+                ['image_path_3' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'],
+                ['image_path_4' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'],
+                ['permit_circulation_image_path' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048']
+            );
+            $imageName = [];
+            for ($i = 0; $i <= 4; $i++) {
+                if ($i < 4) {
+                    $imageName[$i] = time() . '-' . $request['image_path_' . ($i + 1)]->getClientOriginalName();
+                    $request['image_path_' . ($i + 1)]->move('images/products/', $imageName[$i]);
+                }else{
+                    $imageName[$i] = time() . '-' . $request['permit_circulation_image_path']->getClientOriginalName();
+                    $request['permit_circulation_image_path']->move('images/products/', $imageName[$i]);
+                }
+            }
+            
+            $product->update([
+                'image_path_1' => $imageName[0],
+                'image_path_2' => $imageName[1],
+                'image_path_3' => $imageName[2],
+                'image_path_4' => $imageName[3],
+                'permit_circulation_image_path' => $imageName[4]
+            ]);
+            return response($product);
+        } catch (\Exception $e) {
+            return response([
+                'error' => $e,
+            ], 500);
+        }
+    }
     public function update(Request $request, $product_id)
     {
         try {
@@ -73,10 +113,10 @@ class productController extends Controller
                 'description' => 'string',
                 'category_id' => 'integer|in:' . implode(',', $categoriesIds)
             ]);
-            $product = Product::find($product_id);
             $user = Auth::user();
-            if ($product['user_id'] != $user['id'] or $user['role'] != 'admin') {
-                return response($message = 'no está autorizado para ejecutar esta accion', 500);
+            $product = Product::find($product_id);
+            if ($user->id != $product->user_id | $user->role == 'user') {
+                return response(['message' => 'AUTORIZACION DENEGADA: El producto no pertenece a este usuario']);
             }
             $product->update($body);
             return response($product->load('category'));
