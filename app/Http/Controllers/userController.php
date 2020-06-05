@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
-class userController extends Controller
+class UserController extends Controller
 {
     public function getAll()
     {
@@ -21,7 +21,6 @@ class userController extends Controller
             echo 'Excepción capturada: ',  $e->getMessage(), "\n";
         }
     }
-
     public function getById($id)
     {
         try {
@@ -31,15 +30,14 @@ class userController extends Controller
             echo 'Excepción capturada: ',  $e->getMessage(), "\n";
         }
     }
-
     public function register(Request $request)
     {
         try {
             $body = $request->all();
-            $emailExist = User::where('email', $body['email'])->first();
-            if ($emailExist) {
-                return response($message = 'El email ya esta en uso', 500);
-            }
+            // $emailExist = User::where('email', $body['email'])->first();
+            // if ($emailExist) {
+            //     return response($message = 'El email ya esta en uso', 500);
+            // }
             $body['password'] = Hash::make($body['password']);
             $body['confirmation_code'] = sha1($body['email']);
             $user = User::create($body);
@@ -50,13 +48,14 @@ class userController extends Controller
             echo 'Excepción capturada: ',  $e->getMessage(), "\n";
         }
     }
-
     public function confirmation($code)
     {
         try {
             $user = User::where('confirmation_code', $code)->first();
+            if(!$user){
+                return response(['message'=>'El codigo de confirmación ha expirado o no existe']);
+            }
             $body = [
-                'confirmed' => true,
                 'confirmation_code' => null,
                 'email_verified_at' => Carbon::now()
             ];
@@ -69,7 +68,6 @@ class userController extends Controller
             echo 'Excepción capturada: ',  $e->getMessage(), "\n";
         }
     }
-
     public function login(Request $request)
     {
         try {
@@ -80,7 +78,7 @@ class userController extends Controller
                 ], 400);
             }
             $user = Auth::user();
-            if (!$user->confirmed) {
+            if (!$user->email_verified_at) {
                 return response([
                     'message' => 'debe confirmar la cuenta a través de su correo electronico para poder ingresar',
                 ], 400);
@@ -96,7 +94,6 @@ class userController extends Controller
             ], 500);
         }
     }
-
     public function logout(Request $request)
     {
         try {
@@ -111,13 +108,14 @@ class userController extends Controller
             ], 500);
         }
     }
-
     public function update(Request $request, $id)
     {
         try {
             $body = $request->validate([
                 'name' => 'string|max:20',
                 'email' => 'string',
+                'licence'=> 'string',
+                'status_for_renting' => 'string',
                 'password' => 'string|max:15',
                 'role' => 'string'
             ]);
@@ -132,7 +130,6 @@ class userController extends Controller
             ], 500);
         }
     }
-
     public function uploadImage(Request $request)
     {
         try {
@@ -165,7 +162,6 @@ class userController extends Controller
             ], 500);
         }
     }
-
     public function delete($id)
     {
         try {

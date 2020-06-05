@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     protected $guarded = [];
-    public function products()
+    public function product()
     {
-        return $this->belongsToMany('\App\Product')->withPivot('units');
+        return $this->belongsTo('\App\Product');
     }
     public function user()
     {
