@@ -16,8 +16,11 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
+            $table->integer('product_id');
             $table->string('status');
-            $table->date('deliveryDate');
+            $table->date('renting_date_init');
+            $table->date('renting_date_finish');
+            $table->float('price_total_renting',10);
             $table->timestamps();
         });
     }

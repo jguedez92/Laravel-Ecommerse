@@ -114,6 +114,8 @@ class UserController extends Controller
             $body = $request->validate([
                 'name' => 'string|max:20',
                 'email' => 'string',
+                'licence'=> 'string',
+                'status_for_renting' => 'string',
                 'password' => 'string|max:15',
                 'role' => 'string'
             ]);

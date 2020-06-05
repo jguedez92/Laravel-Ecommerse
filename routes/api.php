@@ -23,7 +23,7 @@ Route::prefix('users')->group(function () {
 Route::prefix('categories')->group(function () {
     Route::get('', 'CategoryController@getAll');
     Route::middleware('auth:api')->group(function () {
-        Route::post('/register', 'CategoryController@insert');
+        Route::post('/insert', 'CategoryController@insert');
         Route::put('{id}', 'CategoryController@update');
         Route::delete('{id}', 'CategoryController@delete');
     });
@@ -32,7 +32,7 @@ Route::prefix('products')->group(function () {
     Route::get('', 'ProductController@getAll');
     Route::middleware('auth:api')->group(function () {
         Route::get('/getByUserId', 'ProductController@getProductsByUserId');
-        Route::post('/register', 'ProductController@insert');
+        Route::post('/insert', 'ProductController@insert');
         Route::post('/uploadImage/{product_id}', 'ProductController@uploadImage');
         Route::put('{product_id}', 'ProductController@update');
         Route::delete('{product_id}', 'ProductController@delete');
@@ -40,10 +40,9 @@ Route::prefix('products')->group(function () {
 });
 Route::prefix('orders')->group(function () {
     Route::get('', 'OrderController@getAll');
-    Route::get('/{id}', 'OrderController@getForUserId');
-
     Route::middleware('auth:api')->group(function () {
-        Route::post('/register', 'OrderController@insert');
+        Route::get('/get', 'OrderController@getForUserId');
+        Route::post('/insert', 'OrderController@insert');
         Route::put('{id}', 'OrderController@update');
     });
 });
