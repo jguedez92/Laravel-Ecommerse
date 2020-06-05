@@ -21,7 +21,6 @@ class UserController extends Controller
             echo 'Excepción capturada: ',  $e->getMessage(), "\n";
         }
     }
-
     public function getById($id)
     {
         try {
@@ -31,7 +30,6 @@ class UserController extends Controller
             echo 'Excepción capturada: ',  $e->getMessage(), "\n";
         }
     }
-
     public function register(Request $request)
     {
         try {
@@ -50,13 +48,14 @@ class UserController extends Controller
             echo 'Excepción capturada: ',  $e->getMessage(), "\n";
         }
     }
-
     public function confirmation($code)
     {
         try {
             $user = User::where('confirmation_code', $code)->first();
+            if(!$user){
+                return response(['message'=>'El codigo de confirmación ha expirado o no existe']);
+            }
             $body = [
-                'confirmed' => true,
                 'confirmation_code' => null,
                 'email_verified_at' => Carbon::now()
             ];
@@ -69,7 +68,6 @@ class UserController extends Controller
             echo 'Excepción capturada: ',  $e->getMessage(), "\n";
         }
     }
-
     public function login(Request $request)
     {
         try {
@@ -80,7 +78,7 @@ class UserController extends Controller
                 ], 400);
             }
             $user = Auth::user();
-            if (!$user->confirmed) {
+            if (!$user->email_verified_at) {
                 return response([
                     'message' => 'debe confirmar la cuenta a través de su correo electronico para poder ingresar',
                 ], 400);
@@ -96,7 +94,6 @@ class UserController extends Controller
             ], 500);
         }
     }
-
     public function logout(Request $request)
     {
         try {
@@ -111,13 +108,14 @@ class UserController extends Controller
             ], 500);
         }
     }
-
     public function update(Request $request, $id)
     {
         try {
             $body = $request->validate([
                 'name' => 'string|max:20',
                 'email' => 'string',
+                'licence'=> 'string',
+                'status_for_renting' => 'string',
                 'password' => 'string|max:15',
                 'role' => 'string'
             ]);
@@ -132,7 +130,6 @@ class UserController extends Controller
             ], 500);
         }
     }
-
     public function uploadImage(Request $request)
     {
         try {
@@ -165,7 +162,6 @@ class UserController extends Controller
             ], 500);
         }
     }
-
     public function delete($id)
     {
         try {
