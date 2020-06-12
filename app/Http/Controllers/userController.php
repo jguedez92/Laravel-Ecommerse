@@ -18,7 +18,7 @@ class UserController extends Controller
             $user = User::get();
             return response($user->load('product.category'), 201);
         } catch (\Exception $e) {
-            echo 'Excepción capturada: ',  $e->getMessage(), "\n";
+            return response($message = 'Ha ocurrido un problema... intenténtelo más tarde', 500);
         }
     }
     public function getById($id)
@@ -34,18 +34,17 @@ class UserController extends Controller
     {
         try {
             $body = $request->all();
-            // $emailExist = User::where('email', $body['email'])->first();
-            // if ($emailExist) {
-            //     return response($message = 'El email ya esta en uso', 500);
-            // }
+            $emailExist = User::where('email', $body['email'])->first();
+            if ($emailExist) {
+                 return response($message = 'El email ya esta en uso', 500);
+            }
             $body['password'] = Hash::make($body['password']);
             $body['confirmation_code'] = sha1($body['email']);
             $user = User::create($body);
-            //$user = new User($body);
             Mail::to($user->email)->send(new UserConfirm($user));
             return response($user, 201);
         } catch (\Exception $e) {
-            echo 'Excepción capturada: ',  $e->getMessage(), "\n";
+            return response($message = 'Ha ocurrido un problema... intenténtelo más tarde', 500);
         }
     }
     public function confirmation($code)
@@ -60,12 +59,9 @@ class UserController extends Controller
                 'email_verified_at' => Carbon::now()
             ];
             $user->update($body);
-            return response([
-                'message' => 'usuario Confirmado con exito',
-                $user
-            ]);
+            return response( redirect('http://localhost:3000/confirmation'));
         } catch (\Exception $e) {
-            echo 'Excepción capturada: ',  $e->getMessage(), "\n";
+            return response($message = 'Ha ocurrido un problema... intenténtelo más tarde', 500);
         }
     }
     public function login(Request $request)
@@ -87,7 +83,8 @@ class UserController extends Controller
             return response([
                 'user' => $user,
                 'token' => $token,
-            ]);
+                'message' => 'Bienvenido '.$user->fullName
+            ],200);
         } catch (\Exception $e) {
             return response([
                 'error' => $e->getMessage() . '\n'
@@ -99,11 +96,11 @@ class UserController extends Controller
         try {
             Auth::user()->token()->delete();
             return response([
-                'message' => 'User successfully disconected.'
+                'message' => 'La sesion se ha cerrado correctamente'
             ]);
         } catch (\Exception $e) {
             return response([
-                'message' => 'There was an error trying to login the user',
+                'message' => 'hubo un error al tratar de cerrar sesion',
                 'error' => $e->getMessage()
             ], 500);
         }

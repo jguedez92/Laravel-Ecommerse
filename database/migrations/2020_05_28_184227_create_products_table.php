@@ -18,6 +18,8 @@ class CreateProductsTable extends Migration
             $table->string('brand');
             $table->string('model');
             $table->string('motor');
+            $table->string('year');
+            $table->string('city');
             $table->string('required_license');
             $table->string('status_for_renting')->default('pending');
             $table->float('price',10);
