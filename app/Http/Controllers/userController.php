@@ -21,6 +21,16 @@ class UserController extends Controller
             return response($message = 'Ha ocurrido un problema... intenténtelo más tarde', 500);
         }
     }
+    public function getbyAuth()
+    {
+        try {
+            $id = Auth::id();
+            $user = User::find($id);
+            return response($user->load('product.category'));
+        } catch (\Exception $e) {
+            return response($message = 'Ha ocurrido un problema... intenténtelo más tarde', 500);
+        }
+    }
     public function getById($id)
     {
         try {
@@ -120,6 +130,31 @@ class UserController extends Controller
             $user->update($body);
             return response([
                 'message' => ' user succesfully updated'
+            ]);
+        } catch (\Exception $e) {
+            return response([
+                'error' => $e->getMessage() . '\n'
+            ], 500);
+        }
+    }
+    public function updatePassword(Request $request)
+    {
+        try {
+            $credentials = $request->only('email', 'password');
+            if (!Auth::attempt($credentials)) {
+                return response([
+                    'message' => 'contraseña Invalida',
+                ], 400);
+            }
+            $newPassword = $request->validate([
+                'new_password' => 'required|string|max:15',  
+            ]);
+            $body['password'] = Hash::make($newPassword['new_password']);
+            $id = Auth::id();
+            $user = User::find($id);
+            $user->update($body);
+            return response([
+                'message' => ' Contraseña Actualizada'
             ]);
         } catch (\Exception $e) {
             return response([

@@ -11,10 +11,12 @@ Route::prefix('users')->group(function () {
     Route::post('/register', 'UserController@register');
     Route::post('/login', 'UserController@login');
     Route::get('/getAll', 'UserController@getAll');
+    Route::post('/uploadPassword', 'UserController@updatePassword');
     Route::get('/confirmation/{code}', 'UserController@confirmation');
     Route::middleware('auth:api')->group(function () {
         Route::get('logout', 'UserController@logout');
         Route::get('/{id}', 'UserController@getById');
+        Route::get('/getByAuth', 'UserController@getbyAuth');
         Route::post('/uploadImage', 'UserController@uploadImage');
         Route::put('/{id}', 'UserController@update');
         Route::delete('/{id}', 'UserController@delete');

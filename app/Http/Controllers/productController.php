@@ -14,7 +14,7 @@ class productController extends Controller
     {
         try {
             $products = Product::get();
-            return response($products->load('category'));
+            return response($products->load('category','user'));
         } catch (\Exception $e) {
             return response([
                 'error' => $e->getMessage() . '\n'

@@ -54,7 +54,11 @@ class CategorySeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
-            
+            [
+                'name' =>'Chopper',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]     
         ]);
         
     }

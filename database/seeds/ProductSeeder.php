@@ -16,7 +16,7 @@ class ProductSeeder extends Seeder
             [
                 'brand'=>'Yamaha',
                 'model' =>'Xmax',
-                'motor'=>'125cc',
+                'motor'=>'125',
                 'year' => '2018',
                 'city' => 'madrid',
                 'required_license'=>'A1',
@@ -57,7 +57,7 @@ class ProductSeeder extends Seeder
             [
                 'brand'=>'Honda',
                 'model' =>'CB125',
-                'motor'=>'125cc',
+                'motor'=>'125',
                 'year' => '2018',
                 'city' => 'madrid',
                 'required_license'=>'A1',
@@ -83,7 +83,7 @@ class ProductSeeder extends Seeder
                 'required_license'=>'A2',
                 'status_for_renting'=>'available',
                 'price'=>'130',
-                'description'=>'una moto muy potente perfecta para usar y llevarla a donde quieras, ofrece una posicion de conduccion erguida',
+                'description'=>'una moto muy potente perfecta para usar y llevarla a donde quieras, ofrece una posicion de conduion erguida',
                 'category_id'=>5,
                 'user_id'=>3,
                 'permit_circulation_image_path' => null,
@@ -97,7 +97,7 @@ class ProductSeeder extends Seeder
             [
                 'brand'=>'Yamaha',
                 'model' =>'MT-10',
-                'motor'=>'1000cc',
+                'motor'=>'1000',
                 'year' => '2018',
                 'city' => 'madrid',
                 'required_license'=>'A',
@@ -117,7 +117,7 @@ class ProductSeeder extends Seeder
             [
                 'brand'=>'Kawasaki',
                 'model' =>'ZZR',
-                'motor'=>'1400cc',
+                'motor'=>'1400',
                 'year' => '2018',
                 'city' => 'madrid',
                 'required_license'=>'A',
@@ -137,7 +137,7 @@ class ProductSeeder extends Seeder
             [
                 'brand'=>'Yamaha',
                 'model' =>'XSR900',
-                'motor'=>'900cc',
+                'motor'=>'900',
                 'year' => '2018',
                 'city' => 'madrid',
                 'required_license'=>'A',
@@ -157,7 +157,7 @@ class ProductSeeder extends Seeder
             [
                 'brand'=>'BMW',
                 'model' =>'S1000RR',
-                'motor'=>'1000cc',
+                'motor'=>'1000',
                 'year' => '2018',
                 'city' => 'madrid',
                 'required_license'=>'A',
