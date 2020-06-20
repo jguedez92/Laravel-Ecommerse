@@ -15,8 +15,8 @@ class UserController extends Controller
     public function getAll()
     {
         try {
-            $user = User::get();
-            return response($user->load('product.category'), 201);
+            $users = User::get();
+            return response($users->load('product.category','order.product'), 201);
         } catch (\Exception $e) {
             return response($message = 'Ha ocurrido un problema... intenténtelo más tarde', 500);
         }
@@ -26,7 +26,7 @@ class UserController extends Controller
         try {
             $id = Auth::id();
             $user = User::find($id);
-            return response($user->load('product.category'));
+            return response($user->load('product.category','order.product'));
         } catch (\Exception $e) {
             return response($message = 'Ha ocurrido un problema... intenténtelo más tarde', 500);
         }
@@ -43,10 +43,11 @@ class UserController extends Controller
     public function register(Request $request)
     {
         try {
+            dd($request);
             $body = $request->all();
             $emailExist = User::where('email', $body['email'])->first();
             if ($emailExist) {
-                 return response($message = 'El email ya esta en uso', 500);
+                return response($message = 'El email ya esta en uso', 500);
             }
             $body['password'] = Hash::make($body['password']);
             $body['confirmation_code'] = sha1($body['email']);
@@ -61,15 +62,15 @@ class UserController extends Controller
     {
         try {
             $user = User::where('confirmation_code', $code)->first();
-            if(!$user){
-                return response(['message'=>'El codigo de confirmación ha expirado o no existe']);
+            if (!$user) {
+                return response(['message' => 'El codigo de confirmación ha expirado o no existe']);
             }
             $body = [
                 'confirmation_code' => null,
                 'email_verified_at' => Carbon::now()
             ];
             $user->update($body);
-            return response( redirect('http://localhost:3000/confirmation'));
+            return response(redirect('http://localhost:3000/confirmation'));
         } catch (\Exception $e) {
             return response($message = 'Ha ocurrido un problema... intenténtelo más tarde', 500);
         }
@@ -83,7 +84,8 @@ class UserController extends Controller
                     'message' => 'email y/o contraseña invalido',
                 ], 400);
             }
-            $user = Auth::user();
+            $id = Auth::id();
+            $user = User::find($id);
             if (!$user->email_verified_at) {
                 return response([
                     'message' => 'debe confirmar la cuenta a través de su correo electronico para poder ingresar',
@@ -91,10 +93,10 @@ class UserController extends Controller
             }
             $token = $user->createToken('authToken')->accessToken;
             return response([
-                'user' => $user,
+                'user' => $user->load('product.category','order.product'),
                 'token' => $token,
-                'message' => 'Bienvenido '.$user->fullName
-            ],200);
+                'message' => 'Bienvenido ' . $user->fullName
+            ], 200);
         } catch (\Exception $e) {
             return response([
                 'error' => $e->getMessage() . '\n'
@@ -121,7 +123,7 @@ class UserController extends Controller
             $body = $request->validate([
                 'name' => 'string|max:20',
                 'email' => 'string',
-                'licence'=> 'string',
+                'license' => 'string',
                 'status_for_renting' => 'string',
                 'password' => 'string|max:15',
                 'role' => 'string'
@@ -147,7 +149,7 @@ class UserController extends Controller
                 ], 400);
             }
             $newPassword = $request->validate([
-                'new_password' => 'required|string|max:15',  
+                'new_password' => 'required|string|max:15',
             ]);
             $body['password'] = Hash::make($newPassword['new_password']);
             $id = Auth::id();
@@ -162,35 +164,57 @@ class UserController extends Controller
             ], 500);
         }
     }
-    public function uploadImage(Request $request)
+    public function uploadImgProfile(Request $request)
     {
         try {
             $request->validate(
-                ['profile_image_path' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'],
-                ['licence_image_path' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'],
-                ['dni_image_path' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048']
+                ['profileImg' => 'image|mimes:jpeg,png,jpg|max:2048'],
             );
             $id = Auth::id();
             $user = User::find($id);
-            if ($request['profile_image_path']) {
-                $imageName = time() . '-' . request()->profile_image_path->getClientOriginalName();
-                request()->profile_image_path->move('images/users/', $imageName);
-                $user->update(['profile_image_path' => $imageName]);
-            }
-            if ($request['licence_image_path']) {
-                $imageName = time() . '-' . request()->licence_image_path->getClientOriginalName();
-                request()->licence_image_path->move('images/users/', $imageName);
-                $user->update(['licence_image_path' => $imageName]);
-            }
-            if ($request['dni_image_path']) {
-                $imageName = time() . '-' . request()->dni_image_path->getClientOriginalName();
-                request()->dni_image_path->move('images/users/', $imageName);
-                $user->update(['dni_image_path' => $imageName]);
-            }
+            $imageName = time() . '-' . request()->profileImage->getClientOriginalName();
+            request()->profileImage->move('images/users/', $imageName);
+            $user->update(['profile_image_path' => $imageName]);
             return response($user);
         } catch (\Exception $e) {
             return response([
-                'error' => $e,
+                'message' => $e,
+            ], 500);
+        }
+    }
+    public function uploadImgDni(Request $request)
+    {
+        try {
+            $request->validate(
+                ['dniImg' => 'image|mimes:jpeg,png,jpg|max:2048'],
+            );
+            $id = Auth::id();
+            $user = User::find($id);
+            $imageName = time() . '-' . request()->dniImage->getClientOriginalName();
+            request()->dniImage->move('images/users/', $imageName);
+            $user->update(['dni_image_path' => $imageName]);
+            return response($user);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e,
+            ], 500);
+        }
+    }
+    public function uploadImgLicense(Request $request)
+    {
+        try {
+            $request->validate(
+                ['LicenseImg' => 'image|mimes:jpeg,png,jpg|max:2048'],
+            );
+            $id = Auth::id();
+            $user = User::find($id);
+            $imageName = time() . '-' . request()->licenseImage->getClientOriginalName();
+            request()->licenseImage->move('images/users/', $imageName);
+            $user->update(['license_image_path' => $imageName]);
+            return response($user);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e,
             ], 500);
         }
     }

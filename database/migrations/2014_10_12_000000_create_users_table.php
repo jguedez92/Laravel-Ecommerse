@@ -19,11 +19,11 @@ class CreateUsersTable extends Migration
             $table->string('email');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('licence')->nullable();
+            $table->string('license')->nullable();
             $table->string('role')->default('user');
-            $table->string('status_for_renting')->default('disabled');
+            $table->string('status_for_renting')->default('pending');
             $table->string('profile_image_path')->nullable();
-            $table->string('licence_image_path')->nullable();
+            $table->string('license_image_path')->nullable();
             $table->string('dni_image_path')->nullable();
             $table->string('confirmation_code')->nullable();
             $table->rememberToken();

@@ -36,22 +36,23 @@ class productController extends Controller
     public function insert(Request $request)
     {
         try {
+            //dd($request);
             $categoriesIds = Category::all()->map(fn ($category) => $category->id)->toArray();
             $body = $request->validate([
-                'brand' => 'required|string|max:10',
+                'brand' => 'required|string|max:20',
                 'model' => 'required|string|max:20',
-                'motor' => 'required|string|max:10',
-                'licence' => 'required|string|max:2',
-                'status' => 'required|string',
-                'price' => 'required|numeric',
-                'description' => 'string',
+                'motor' => 'required|string|max:20',
+                'year' => 'required|string|max:20',
+                'city' => 'required|string|max:20',
+                'required_license' => 'required|string|max:20',
+                'status_for_renting' => 'required|string',
+                'price' => 'required|integer',
+                'description' => 'required|string',
                 'category_id' => 'required|integer|in:' . implode(',', $categoriesIds),
                 'user_id' => 'required|integer'
-
             ]);
             $product = Product::create($body);
             return response($product->load('category'), 201);
-            return response($product, 201);
         } catch (\Exception $e) {
             return response([
                 'error' => $e->getMessage() . '\n'
@@ -98,6 +99,92 @@ class productController extends Controller
             ], 500);
         }
     }
+
+    public function uploadImg1(Request $request, $id)
+    {
+        try {
+            $request->validate(
+                ['file' => 'image|mimes:jpeg,png,jpg|max:2048'],
+            );
+            $product = Product::find($id);
+            $imageName = time() . '-' . request()->file->getClientOriginalName();
+            request()->file->move('images/products/', $imageName);
+            $product->update(['image_path_1' => $imageName]);
+            return response($product);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e,
+            ], 500);
+        }
+    }
+    public function uploadImg2(Request $request, $id)
+    {
+        try {
+            $request->validate(
+                ['file' => 'image|mimes:jpeg,png,jpg|max:2048'],
+            );
+            $product = Product::find($id);
+            $imageName = time() . '-' . request()->file->getClientOriginalName();
+            request()->file->move('images/products/', $imageName);
+            $product->update(['image_path_2' => $imageName]);
+            return response($product);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e,
+            ], 500);
+        }
+    }
+    public function uploadImg3(Request $request, $id)
+    {
+        try {
+            $request->validate(
+                ['file' => 'image|mimes:jpeg,png,jpg|max:2048'],
+            );
+            $product = Product::find($id);
+            $imageName = time() . '-' . request()->file->getClientOriginalName();
+            request()->file->move('images/products/', $imageName);
+            $product->update(['image_path_3' => $imageName]);
+            return response($product);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e,
+            ], 500);
+        }
+    }
+    public function uploadImg4(Request $request, $id)
+    {
+        try {
+            $request->validate(
+                ['file' => 'image|mimes:jpeg,png,jpg|max:2048'],
+            );
+            $product = Product::find($id);
+            $imageName = time() . '-' . request()->file->getClientOriginalName();
+            request()->file->move('images/products/', $imageName);
+            $product->update(['image_path_4' => $imageName]);
+            return response($product);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e,
+            ], 500);
+        }
+    }
+    public function uploadPermitConduction(Request $request, $id)
+    {
+        try {
+            $request->validate(
+                ['file' => 'image|mimes:jpeg,png,jpg|max:2048'],
+            );
+            $product = Product::find($id);
+            $imageName = time() . '-' . request()->file->getClientOriginalName();
+            request()->file->move('images/products/', $imageName);
+            $product->update(['permit_circulation_image_path' => $imageName]);
+            return response($product);
+        } catch (\Exception $e) {
+            return response([
+                'message' => $e,
+            ], 500);
+        }
+    }
     public function update(Request $request, $product_id)
     {
         try {
@@ -107,15 +194,17 @@ class productController extends Controller
                 'brand' => 'string|max:10',
                 'model' => 'string|max:20',
                 'motor' => 'string|max:10',
-                'licence' => 'string|max:2',
-                'status' => 'string',
-                'price' => 'numeric',
+                'year' => 'string|max:20',
+                'city' => 'string|max:20',
+                'required_license' => 'string|max:20',
+                'status_for_renting' => 'string',
+                'price' => 'integer',
                 'description' => 'string',
                 'category_id' => 'integer|in:' . implode(',', $categoriesIds)
             ]);
             $user = Auth::user();
             $product = Product::find($product_id);
-            if ($user->id != $product->user_id | $user->role == 'user') {
+            if ($user->id != $product->user_id && $user->role == 'user') {
                 return response(['message' => 'AUTORIZACION DENEGADA: El producto no pertenece a este usuario']);
             }
             $product->update($body);
@@ -126,14 +215,31 @@ class productController extends Controller
             ], 500);
         }
     }
-    public function delete($product_id, $user_id)
+    public function enableProduct( $product_id)
+    {
+        try {
+            $user = Auth::user();
+            $product = Product::find($product_id);
+            if ($user->id != $product->user_id && $user->role != 'admin') {
+                return response(['message' => 'AUTORIZACION DENEGADA: El producto no pertenece a este usuario']);
+            }
+            $body['status_for_renting'] = 'enabled';
+            $product->update($body);
+            return response($product->load('category'));
+        } catch (\Exception $e) {
+            return response([
+                'error' => $e->getMessage() . '\n'
+            ], 500);
+        }
+    }
+    public function delete($product_id)
     {
         try {
             $product = Product::find($product_id);
-            $user = Auth::user();
+            /*$user = Auth::user();
             if ($user['role'] != 'admin') {
                 return response($message = 'no está autorizado para ejecutar esta accion', 500);
-            }
+            }*/
             $product->delete();
             return response([
                 'message' => 'Producto eliminado con éxito',
@@ -145,4 +251,5 @@ class productController extends Controller
             ], 500);
         }
     }
+
 }

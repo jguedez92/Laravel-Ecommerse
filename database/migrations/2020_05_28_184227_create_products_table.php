@@ -24,8 +24,8 @@ class CreateProductsTable extends Migration
             $table->string('status_for_renting')->default('pending');
             $table->float('price',10);
             $table->text('description');
-            $table->text('category_id');
-            $table->text('user_id');
+            $table->integer('category_id');
+            $table->integer('user_id');
             $table->string('permit_circulation_image_path')->nullable();
             $table->string('image_path_1')->nullable();
             $table->string('image_path_2')->nullable();
