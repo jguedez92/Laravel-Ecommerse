@@ -43,7 +43,6 @@ class UserController extends Controller
     public function register(Request $request)
     {
         try {
-            dd($request);
             $body = $request->all();
             $emailExist = User::where('email', $body['email'])->first();
             if ($emailExist) {

@@ -15,50 +15,45 @@ class CategorySeeder extends Seeder
     {
         DB::table('categories')->insert([
             [
-                'name' =>'Scooter',
+                'name' =>'Scooter',//1
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'name' =>'Urban',
+                'name' =>'Urban',//2
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'name' =>'Cross & Motard',
+                'name' =>'Cross & Motard',//3
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'name' =>'Sport Touring',
+                'name' =>'Sport Touring',//4
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'name' =>'Adventure',
+                'name' =>'Adventure',//5
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'name' =>'Hyper Naked',
+                'name' =>'Hyper Naked',//6
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'name' =>'Sport Heritage',
+                'name' =>'Sport Heritage',//7
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'name' =>'Super Sport',
+                'name' =>'Super Sport',//8
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
-            ],
-            [
-                'name' =>'Chopper',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ]     
+            ],   
         ]);
         
     }

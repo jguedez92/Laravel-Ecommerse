@@ -18,6 +18,7 @@ Route::prefix('users')->group(function () {
         Route::get('/getByAuth', 'UserController@getByAuth');
         Route::get('/{id}', 'UserController@getById');
         Route::post('/uploadImgProfile', 'UserController@uploadImgProfile');
+        Route::post('/test', 'UserController@uploadImgProfile');
         Route::post('/uploadImgDni', 'UserController@uploadImgDni');
         Route::post('/uploadImgLicense', 'UserController@uploadImgLicense');
         Route::put('/{id}', 'UserController@update');
