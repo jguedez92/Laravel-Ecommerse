@@ -99,7 +99,6 @@ class productController extends Controller
             ], 500);
         }
     }
-
     public function uploadImg1(Request $request, $id)
     {
         try {

@@ -21,7 +21,6 @@ class OrderController extends Controller
             return response($e, 500);
         }
     }
-
     public function getForUser()
     {
         try {
@@ -32,7 +31,6 @@ class OrderController extends Controller
             return response($e, 500);
         }
     }
-
     public function insert(Request $request)
     {
         try {
@@ -80,7 +78,6 @@ class OrderController extends Controller
             return response($e, 500);
         }
     }
-
     public function update(Request $request, $id)
     {
         try {

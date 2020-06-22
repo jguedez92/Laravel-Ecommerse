@@ -31,15 +31,6 @@ class UserController extends Controller
             return response($message = 'Ha ocurrido un problema... intenténtelo más tarde', 500);
         }
     }
-    public function getById($id)
-    {
-        try {
-            $user = User::find($id);
-            return response($user->load('product.category'), 201);
-        } catch (\Exception $e) {
-            echo 'Excepción capturada: ',  $e->getMessage(), "\n";
-        }
-    }
     public function register(Request $request)
     {
         try {
