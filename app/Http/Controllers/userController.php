@@ -96,7 +96,7 @@ class UserController extends Controller
     public function logout(Request $request)
     {
         try {
-            Auth::user()->token()->delete();
+            $user = Auth::user()->token()->delete();
             return response([
                 'message' => 'La sesion se ha cerrado correctamente'
             ]);
