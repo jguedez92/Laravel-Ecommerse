@@ -26,6 +26,7 @@ class CreateProductsTable extends Migration
             $table->text('description');
             $table->integer('category_id');
             $table->integer('user_id');
+            $table->boolean('detach');
             $table->string('permit_circulation_image_path')->nullable();
             $table->string('image_path_1')->nullable();
             $table->string('image_path_2')->nullable();
