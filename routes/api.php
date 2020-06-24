@@ -35,8 +35,8 @@ Route::prefix('categories')->group(function () {
 });
 Route::prefix('products')->group(function () {
     Route::get('', 'ProductController@getAll');
+    Route::get('/{id}', 'ProductController@getProductsById');
     Route::middleware('auth:api')->group(function () {
-        Route::get('/get_by_userId', 'ProductController@getProductsByUserId');
         Route::post('/insert', 'ProductController@insert');
         Route::post('/img_1/{id}', 'ProductController@uploadImg1');
         Route::post('/img_2/{id}', 'ProductController@uploadImg2');

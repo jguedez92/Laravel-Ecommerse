@@ -21,22 +21,21 @@ class productController extends Controller
             ], 500);
         }
     }
-    public function getProductsByUserId()
+    public function getProductsById($id)
     {
         try {
-            $user = Auth::user();
-            $products = Product::where('user_id', $user['id'])->get();
-            return response($products->load('category'));
+            $products = Product::find($id);
+            return response($products->load('category','user'));
         } catch (\Exception $e) {
             return response([
                 'error' => $e->getMessage() . '\n'
             ], 500);
         }
     }
+
     public function insert(Request $request)
     {
         try {
-            //dd($request);
             $categoriesIds = Category::all()->map(fn ($category) => $category->id)->toArray();
             $body = $request->validate([
                 'brand' => 'required|string|max:20',
