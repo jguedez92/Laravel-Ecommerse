@@ -13,7 +13,7 @@ class productController extends Controller
     {
         try {
             $products = Product::get();
-            return response($products->load('category','user'));
+            return response($products);
         } catch (\Exception $e) {
             return response([
                 'error' => $e->getMessage() . '\n'
