@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+
 class User extends Authenticatable
 {
     use Notifiable, HasApiTokens;
@@ -15,7 +16,18 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $guarded = [];
+    protected $fillable = [
+        'fullName',
+        'email',
+        'password',
+        'license',
+        'role',
+        'status_for_renting',
+        'profile_image_path',
+        'license_image_path',
+        'dni_image_path',
+        'confirmation_code'
+    ];
 
     /**
      * The attributes that should be hidden for arrays.
