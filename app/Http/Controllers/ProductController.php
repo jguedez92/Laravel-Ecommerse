@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\User;
 use App\Category;
 use App\Product;
 use Illuminate\Http\Request;
