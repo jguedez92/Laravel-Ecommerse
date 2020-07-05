@@ -34,14 +34,10 @@ class UserController extends Controller
     {
         try {
             $body = $request->all();
-            $emailExist = User::where('email', $body['email'])->first();
-            if ($emailExist) {
-                return response($message = 'El email ya esta en uso', 500);
-            }
             $body['password'] = Hash::make($body['password']);
             $body['confirmation_code'] = sha1($body['email']);
             $user = User::create($body);
-            Mail::to($user->email)->send(new UserConfirm($user));
+            //Mail::to($user->email)->send(new UserConfirm($user));
             return response($user, 201);
         } catch (\Exception $e) {
             return response($message = 'Ha ocurrido un problema... intenténtelo más tarde', 500);
