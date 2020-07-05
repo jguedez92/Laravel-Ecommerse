@@ -41,7 +41,7 @@ class UserController extends Controller
             $body['password'] = Hash::make($body['password']);
             $body['confirmation_code'] = sha1($body['email']);
             $user = User::create($body);
-            //Mail::to($user->email)->send(new UserConfirm($user));
+            Mail::to($user->email)->send(new UserConfirm($user));
             return response($user, 201);
         } catch (\Exception $e) {
             return response($message = 'Ha ocurrido un problema... intenténtelo más tarde', 500);
@@ -59,7 +59,7 @@ class UserController extends Controller
                 'email_verified_at' => Carbon::now()
             ];
             $user->update($body);
-            return response(redirect('http://localhost:3000/confirmation'));
+            return response(redirect('https://react-geekhubs-ecommerce.herokuapp.com/confirmation'));
         } catch (\Exception $e) {
             return response($message = 'Ha ocurrido un problema... intenténtelo más tarde', 500);
         }
