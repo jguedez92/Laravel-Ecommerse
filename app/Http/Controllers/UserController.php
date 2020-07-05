@@ -34,6 +34,10 @@ class UserController extends Controller
     {
         try {
             $body = $request->all();
+            $emailExist = User::where('email', $body['email'])->first();
+            if ($emailExist) {
+                return response($message = 'El email ya esta en uso', 500);
+            }
             $body['password'] = Hash::make($body['password']);
             $body['confirmation_code'] = sha1($body['email']);
             $user = User::create($body);
