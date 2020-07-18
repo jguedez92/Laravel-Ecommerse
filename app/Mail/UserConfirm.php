@@ -21,7 +21,7 @@ class UserConfirm extends Mailable
     public function __construct($user)
     {
         $this->user = $user;
-        $this->url = 'https://laravel-e-commerce-api.herokuapp.com/api/users/confirmation/'.$user->confirmation_code;
+        $this->code = $user->confirmation_code;
     }
 
     /**

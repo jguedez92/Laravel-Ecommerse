@@ -37,10 +37,9 @@
             <p style="padding: 3 em;">
                 Bienvenido {{ $user->fullName }} a nuestro portal, estás a sólo
                 un paso de completar tu registro, y puedas rentar
-                una motocicleta y disfrutar de la emosión de viajar en dos ruedas....
-                <br>
-                Sólo tienes que ingresar <a href={{$url}}> AQUI </a> para completar tu
-                registro y confirmar tu cuenta....
+                una motocicleta y disfrutar de la emosión de viajar en dos ruedas,
+                su codigo de activación es <b>{{$code}}</b> , ingrese este codigo 
+                para poder usar su cuenta.  
             </p>
         </div>
     </main>

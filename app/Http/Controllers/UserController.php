@@ -39,10 +39,9 @@ class UserController extends Controller
                 return response($message = 'El email ya esta en uso', 500);
             }
             //$body['password'] = Hash::make($body['password']);
-            //$body['confirmation_code'] = sha1($body['email']);
+            $body['confirmation_code'] = rand($min = 100000, $max = 999999);
             //$user = User::create($body);
-            $user = new User;
-            $user->email = $body['email'];
+            $user = new User($body);
             Mail::to($user->email)->send(new UserConfirm($user));
             return response($user, 201);
         } catch (\Exception $e) {
