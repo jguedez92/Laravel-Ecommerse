@@ -41,7 +41,9 @@ class UserController extends Controller
             //$body['password'] = Hash::make($body['password']);
             $body['confirmation_code'] = rand($min = 100000, $max = 999999);
             //$user = User::create($body);
-            $user = new User($body);
+            $user = new User;
+            $user->email = $body['email'];
+            $user->email = $body['confirmation_code'];
             Mail::to($user->email)->send(new UserConfirm($user));
             return response($user, 201);
         } catch (\Exception $e) {
