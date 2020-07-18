@@ -43,7 +43,7 @@ class UserController extends Controller
             //$user = User::create($body);
             $user = new User;
             $user->email = $body['email'];
-            $user->email = $body['confirmation_code'];
+            $user->confirmation_code = $body['confirmation_code'];
             Mail::to($user->email)->send(new UserConfirm($user));
             return response($user, 201);
         } catch (\Exception $e) {
