@@ -11,7 +11,7 @@ class UserConfirm extends Mailable
 {
     use Queueable, SerializesModels;
     public $user;
-    public $url;
+    public $code;
 
     /**
      * Create a new message instance.
