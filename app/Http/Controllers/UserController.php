@@ -38,31 +38,27 @@ class UserController extends Controller
             if ($emailExist) {
                 return response($message = 'El email ya esta en uso', 500);
             }
-            //$body['password'] = Hash::make($body['password']);
-            $body['confirmation_code'] = rand($min = 100000, $max = 999999);
-            //$user = User::create($body);
-            $user = new User;
-            $user->email = $body['email'];
-            $user->confirmation_code = $body['confirmation_code'];
+            $body['password'] = Hash::make($body['password']);
+            $code = rand($min = 100000, $max = 999999);
+            $body['confirmation_code'] = "{$code}";
+            $user = User::create($body);
             Mail::to($user->email)->send(new UserConfirm($user));
-            return response($user, 201);
+            return response(['userId' => $user->id], 201);
         } catch (\Exception $e) {
             return response($message = $e, 500);
         }
     }
-    public function confirmation($code)
+    public function confirmation(Request $request)
     {
         try {
-            $user = User::where('confirmation_code', $code)->first();
-            if (!$user) {
-                return response(['message' => 'El codigo de confirmación ha expirado o no existe']);
+            $id = $request['id'];
+            $code = $request['confirmation_code'];
+            $user = User::find($id);
+            if($user->confirmation_code != $code){
+                return response($message = 'El codigo ingresado es incorrecto', 500);
             }
-            $body = [
-                'confirmation_code' => null,
-                'email_verified_at' => Carbon::now()
-            ];
-            $user->update($body);
-            return response(redirect('https://react-geekhubs-ecommerce.herokuapp.com/confirmation'));
+            $user->update(['email_verified_at'=>Carbon::now(), 'confirmation_code'=>null]);
+            return response($user, 201);
         } catch (\Exception $e) {
             return response($message = 'Ha ocurrido un problema... intenténtelo más tarde', 500);
         }
@@ -80,8 +76,9 @@ class UserController extends Controller
             $user = User::find($id);
             if (!$user->email_verified_at) {
                 return response([
-                    'message' => 'debe confirmar la cuenta a través de su correo electronico para poder ingresar',
-                ], 400);
+                    'message' => 'debe confirmar la cuenta para poder ingresar',
+                    'user_activation' => $user->id
+                ], 200);
             }
             $token = $user->createToken('authToken')->accessToken;
             return response([

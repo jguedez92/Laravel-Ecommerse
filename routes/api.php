@@ -10,6 +10,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::prefix('users')->group(function () {
     Route::post('/register', 'UserController@register');
     Route::post('/login', 'UserController@login');
+    Route::post('/confirmation', 'UserController@confirmation');
     Route::get('/getAll', 'UserController@getAll');
     Route::post('/update_assword', 'UserController@updatePassword');
     Route::get('/confirmation/{code}', 'UserController@confirmation');
