@@ -45,7 +45,7 @@ class UserController extends Controller
             Mail::to($user->email)->send(new UserConfirm($user));
             return response(['userId' => $user->id], 201);
         } catch (\Exception $e) {
-            return response($message = $e, 500);
+            return response(['message' =>  $e], 500);
         }
     }
     public function confirmation(Request $request)
@@ -70,7 +70,7 @@ class UserController extends Controller
             if (!Auth::attempt($credentials)) {
                 return response([
                     'message' => 'email y/o contraseña invalido',
-                ], 400);
+                ], 500);
             }
             $id = Auth::id();
             $user = User::find($id);
